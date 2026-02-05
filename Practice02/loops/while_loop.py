@@ -1,0 +1,15 @@
+#1
+a=2
+while(a<8):
+    print(a)
+    a+2
+#2
+b=7
+while(b>1):
+    print(b)
+    b=-1
+#3
+c=9
+while(c>0):
+    print("good")
+    c-=1
