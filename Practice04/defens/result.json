@@ -1,0 +1,34 @@
+[
+    {
+        "teacher": "Maut",
+        "course": "1",
+        "students": [
+            "Kanat",
+            "Aybin"
+        ]
+    },
+    {
+        "teacher": "Aksha",
+        "course": "2",
+        "students": [
+            "bagdaty",
+            "Saken"
+        ]
+    },
+    {
+        "teacher": "Bayzhan",
+        "course": "3",
+        "students": [
+            "Abzal",
+            "Abu"
+        ]
+    },
+    {
+        "teacher": "Ysikin",
+        "course": "4",
+        "students": [
+            "Make",
+            "Bake"
+        ]
+    }
+]
