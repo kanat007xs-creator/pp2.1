@@ -1,12 +1,12 @@
 import re
-import json
 
+# 
 with open("Practice05/raw.txt", "r", encoding="utf-8") as f:
     text = f.read()
 
 # 1
 prices = re.findall(r'\d+\s?x\s([\d\s,]+)', text)
-prices = [p.replace(" ", "") for p in prices]
+prices = [p.replace(" ", "").replace(",", ".") for p in prices]
 
 # 2
 products = re.findall(r'\d+\.\n(.+)', text)
@@ -23,18 +23,18 @@ datetime = datetime_match.group(1) if datetime_match else None
 payment_match = re.search(r'(Банковская карта|Наличные)', text)
 payment = payment_match.group(1) if payment_match else None
 
-# 
-result = {
-    "products": products,
-    "prices": prices,
-    "total_amount": total,
-    "datetime": datetime,
-    "payment_method": payment
-}
 
+print("Products:")
+for p in products:
+    print("-", p)
 
-with open("result.json", "w", encoding="utf-8") as f:
-    json.dump(result, f, indent=4, ensure_ascii=False)
+print("\nPrices:")
+for price in prices:
+    print("-", price)
+
+print("\nTotal amount:", total)
+print("Date and time:", datetime)
+print("Payment method:", payment)
 
 # 1
 task1 = re.findall(r'ab*', text)
