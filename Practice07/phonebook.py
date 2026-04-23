@@ -24,7 +24,7 @@ def create_new_table(name):
     cur.close()
     conn.close()
 
-# CSV import
+#CSV
 def insert_from_csv(filename):
     conn = get_connection()
     cur = conn.cursor()
@@ -41,7 +41,7 @@ def insert_from_csv(filename):
     cur.close()
     conn.close()
 
-# READ - показать все
+#бәрін корсету
 def get_all_contacts():
     conn = get_connection()
     cur = conn.cursor()
@@ -55,7 +55,7 @@ def get_all_contacts():
     cur.close()
     conn.close()
 
-# READ с фильтром
+#фильтром
 def search_by_name(name):
     conn = get_connection()
     cur = conn.cursor()
@@ -78,7 +78,7 @@ def search_by_phone_prefix(prefix):
     cur.close()
     conn.close()
 
-# UPDATE
+#UPDATE
 def update_contact(old_name, new_name=None, new_phone=None):
     conn = get_connection()
     cur = conn.cursor()
@@ -92,7 +92,7 @@ def update_contact(old_name, new_name=None, new_phone=None):
     cur.close()
     conn.close()
 
-# DELETE
+#DELETE
 def delete_contact_by_name(name):
     conn = get_connection()
     cur = conn.cursor()
@@ -113,7 +113,7 @@ def delete_contact_by_phone(phone):
     cur.close()
     conn.close()
 
-# 🖥 Console menu
+#Console
 def menu():
     while True:
         print("\n1. Add contact")
