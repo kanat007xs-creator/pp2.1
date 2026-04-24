@@ -1,50 +1,69 @@
 import pygame
+import sys
+import os
+from player import MusicPlayer
 
-import pygame
-from player import play_track, stop_track, next_track, previous_track, get_track_name
+def main():
+    pygame.init()
 
-pygame.init()
+    WIDTH, HEIGHT = 600, 300
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Music Player")
 
+    font = pygame.font.SysFont(None, 36)
 
-screen = pygame.display.set_mode((700, 300))
-pygame.display.set_caption("Music Player")
+    music_folder = os.path.join(os.path.dirname(__file__), "music")
+    player = MusicPlayer(music_folder)
 
-font = pygame.font.Font(None, 36)
-small_font = pygame.font.Font(None, 28)
+    clock = pygame.time.Clock()
 
-done = False
+    running = True
+    while running:
+        screen.fill((30, 30, 30))
 
-while not done:
-    screen.fill((30, 30, 30))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-    title = font.render("Music Player", True, (255, 255, 255))
-    track_text = small_font.render(get_track_name(), True, (255, 255, 255))
-    controls_text = small_font.render("P-play  S-stop  N-next  B-back  Q-quit", True, (200, 200, 200))
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    player.play()
+                elif event.key == pygame.K_s:
+                    player.stop()
+                elif event.key == pygame.K_n:
+                    player.next_track()
+                elif event.key == pygame.K_b:
+                    player.prev_track()
+                elif event.key == pygame.K_q:
+                    running = False
 
-    screen.blit(title, (250, 50))
-    screen.blit(track_text, (50, 120))
-    screen.blit(controls_text, (50, 180))
+        # Текущий трек
+        track_text = font.render(f"Track: {player.get_current_track_name()}", True, (255, 255, 255))
+        screen.blit(track_text, (20, 50))
 
-    pygame.display.flip()
+        # Позиция
+        pos = player.get_position()
+        time_text = font.render(f"Time: {pos} sec", True, (200, 200, 200))
+        screen.blit(time_text, (20, 100))
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            done = True
+        # Управление
+        controls = [
+            "P - Play",
+            "S - Stop",
+            "N - Next",
+            "B - Previous",
+            "Q - Quit"
+        ]
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_p:
-                play_track()
+        for i, text in enumerate(controls):
+            ctrl_text = font.render(text, True, (150, 150, 150))
+            screen.blit(ctrl_text, (20, 150 + i * 25))
 
-            if event.key == pygame.K_s:
-                stop_track()
+        pygame.display.flip()
+        clock.tick(60)
 
-            if event.key == pygame.K_n:
-                next_track()
+    pygame.quit()
+    sys.exit()
 
-            if event.key == pygame.K_b:
-                previous_track()
-
-            if event.key == pygame.K_q:
-                done = True
-
-pygame.quit()
+if __name__ == "__main__":
+    main()

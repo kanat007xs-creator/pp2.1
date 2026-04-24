@@ -1,35 +1,60 @@
 import pygame
+import os
 
-playlist = [
-    "musics/Mac_DeMarco - No_Other_Heart.mp3",
-    "musics/Mac_Demarco - moonlight_on_the_river.mp3",
-    "musics/The_Cure - Lovesong.mp3"
-]
+class MusicPlayer:
+    def __init__(self, music_folder):
+        self.music_folder = music_folder
+        
+        # Загружаем все треки
+        self.playlist = [f for f in os.listdir(music_folder) if f.endswith(".wav") or f.endswith(".mp3")]
+        self.playlist.sort()
 
-current_track = 0
+        self.current_index = 0
+        self.is_playing = False
 
+        pygame.mixer.init()
 
+    def load_track(self):
+        if not self.playlist:
+            return
+        
+        track_path = os.path.join(self.music_folder, self.playlist[self.current_index])
+        pygame.mixer.music.load(track_path)
 
-def play_track():
-    pygame.mixer.music.load(playlist[current_track])
-    pygame.mixer.music.play()
+    def play(self):
+        if not self.playlist:
+            return
+        
+        self.load_track()
+        pygame.mixer.music.play()
+        self.is_playing = True
 
+    def stop(self):
+        pygame.mixer.music.stop()
+        self.is_playing = False
 
-def stop_track():
-    pygame.mixer.music.stop()
+    def next_track(self):
+        if not self.playlist:
+            return
+        
+        self.current_index = (self.current_index + 1) % len(self.playlist)
+        self.play()
 
+    def prev_track(self):
+        if not self.playlist:
+            return
+        
+        self.current_index = (self.current_index - 1) % len(self.playlist)
+        self.play()
 
-def next_track():
-    global current_track
-    current_track = (current_track + 1) % len(playlist)
-    play_track()
+    def get_current_track_name(self):
+        if not self.playlist:
+            return "No tracks"
+        return self.playlist[self.current_index]
 
-
-def previous_track():
-    global current_track
-    current_track = (current_track - 1) % len(playlist)
-    play_track()
-
-
-def get_track_name():
-    return playlist[current_track].split("/")[-1]
+    def get_position(self):
+        # позиция в миллисекундах → переводим в секунды
+        pos_ms = pygame.mixer.music.get_pos()
+        if pos_ms == -1:
+            return 0
+        return pos_ms // 1000
